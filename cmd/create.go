@@ -8,23 +8,42 @@ import (
 	"fmt"
 
 	"github.com/spf13/cobra"
-	"github.com/pterm/pterm"
 )
 
 // createCmd represents the create command
 var createCmd = &cobra.Command{
 	Use:   "create",
 	Short: "A brief description of your command",
+	Long: `A longer description that spans multiple lines and likely contains examples
+and usage of using your command. For example:
+
+Cobra is a CLI library for Go that empowers applications.
+This application is a tool to generate the needed files
+to quickly create a Cobra application.`,
 	Run: func(cmd *cobra.Command, args []string) {
-		input := pterm.DefaultInteractiveTextInput
-		result, _ := input.Show()
-		fmt.Println(result)
+		fmt.Println("create called")
+	},
+}
+
+var createLocalCmd = &cobra.Command{
+	Use: "local",
+	Short: "Local management",
+	Run: func(cmd *cobra.Command, args []string) {
+		fmt.Println("create local called")
+	},
+}
+
+var createClusterCmd = &cobra.Command{
+	Use: "cluster",
+	Short: "Cluster management",
+	Run: func(cmd *cobra.Command, args []string) {
+		fmt.Println("create cluster called")
 	},
 }
 
 func init() {
 	rootCmd.AddCommand(createCmd)
-
+	createCmd.AddCommand(createLocalCmd, createClusterCmd)
 	// Here you will define your flags and configuration settings.
 
 	// Cobra supports Persistent Flags which will work for this command
