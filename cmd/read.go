@@ -14,19 +14,30 @@ import (
 var readCmd = &cobra.Command{
 	Use:   "read",
 	Short: "A brief description of your command",
-	Long: `A longer description that spans multiple lines and likely contains examples
-and usage of using your command. For example:
-
-Cobra is a CLI library for Go that empowers applications.
-This application is a tool to generate the needed files
-to quickly create a Cobra application.`,
 	Run: func(cmd *cobra.Command, args []string) {
 		fmt.Println("read called")
 	},
 }
 
+var readClusterCmd = &cobra.Command{
+	Use: "cluster",
+	Short: "Cluster management",
+	Run: func(cmd *cobra.Command, args []string) {
+		fmt.Println("read cluster called")
+	},
+}
+
+var readLocalCmd = &cobra.Command{
+	Use: "local",
+	Short: "local management",
+	Run: func(cmd *cobra.Command, args []string) {
+		fmt.Println("read local called")
+	},
+}
+
 func init() {
 	rootCmd.AddCommand(readCmd)
+	readCmd.AddCommand(readLocalCmd, readClusterCmd)
 
 	// Here you will define your flags and configuration settings.
 
