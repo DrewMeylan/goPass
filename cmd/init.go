@@ -1,4 +1,5 @@
 /*
+
 Copyright © 2025 NAME HERE <EMAIL ADDRESS>
 
 */
@@ -8,30 +9,32 @@ import (
 	"fmt"
 
 	"github.com/spf13/cobra"
-	"github.com/pterm/pterm"
 )
 
-// createCmd represents the create command
-var createCmd = &cobra.Command{
-	Use:   "create",
-	Short: "A brief description of your command",
+// initCmd represents the init command
+var initCmd = &cobra.Command{
+	Use:   "init",
+	Short: "Initialize a new password store.",
 	Run: func(cmd *cobra.Command, args []string) {
-		input := pterm.DefaultInteractiveTextInput
-		result, _ := input.Show()
-		fmt.Println(result)
+		toggle, _ := cmd.Flags().GetBool("toggle")
+		if toggle {
+			fmt.Println("Help goes here")
+		} else {
+		fmt.Println("init called")
+	}
 	},
 }
 
 func init() {
-	rootCmd.AddCommand(createCmd)
+	rootCmd.AddCommand(initCmd)
 
 	// Here you will define your flags and configuration settings.
 
 	// Cobra supports Persistent Flags which will work for this command
 	// and all subcommands, e.g.:
-	// createCmd.PersistentFlags().String("foo", "", "A help for foo")
+	// initCmd.PersistentFlags().String("foo", "", "A help for foo")
 
 	// Cobra supports local flags which will only run when this command
 	// is called directly, e.g.:
-	// createCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
+	initCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
 }
