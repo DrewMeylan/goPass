@@ -5,6 +5,7 @@ Copyright © 2025 NAME HERE <EMAIL ADDRESS>
 package cmd
 
 import (
+	"gopass/utils"
 	"fmt"
 	"github.com/pterm/pterm"
 	"github.com/spf13/cobra"
@@ -23,10 +24,19 @@ var createLocalCmd = &cobra.Command{
 	Use: "local",
 	Short: "Local management",
 	Run: func(cmd *cobra.Command, args []string) {
-		getDBName := pterm.DefaultInteractiveTextInput
-		getDBName.DefaultText = "What would you like to name this local database?"
-		result, _ := getDBName.Show()
-		fmt.Println(result)
+		getPassName := pterm.DefaultInteractiveTextInput
+		getPass := pterm.DefaultInteractiveTextInput
+		getPass.DefaultText = "Enter your password"
+		getPassName.DefaultText = "What would you like to name this local password?"
+		PassName, _ := getPassName.Show()
+		Pass, _ := getPass.Show()
+
+		err := utils.WriteFile(PassName, Pass)
+		if err != nil {
+			fmt.Println("Error writing file:", err)
+			return
+		}
+//		return nil
 	},
 }
 
