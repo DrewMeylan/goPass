@@ -7,6 +7,7 @@ package cmd
 
 import (
 	"fmt"
+	"strings"
 	"os"
 //	"io/fs"
 //	"path/filepath"
@@ -103,14 +104,14 @@ var initLocalCmd = &cobra.Command {
 // ------------------------------------------------- Logic ------------------------------------------------------	
 		Name, _ := getDBName.Show()
 		useExistKey, _ := getDBKey.Show() // Maybe offload this to helper function like getPass()
-		useExistNorm := strings.ToLower(string.TrimSpace(useExistKey)) // With above
+		useExistNorm := strings.ToLower(strings.TrimSpace(useExistKey)) // With above
 		var gpgPassword string
 		if useExistNorm == "yes" || useExistNorm == "y" {
 			existKeyPath, _ := getKeyPath.Show()
 			fmt.Println("Creating database " + Name + " with key " + existKeyPath) 
 		} else {
 			gpgPassword = getPassword()
-			fmt.Println("password" gpgPassword)
+			fmt.Println("password: " + gpgPassword)
 		}
 
 		err := os.Mkdir("./internal/"+Name, 0755) // creates the directory to store the passwords.
