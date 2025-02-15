@@ -10,6 +10,8 @@ import (
 	"os"
 //	"io/fs"
 //	"path/filepath"
+	"syscall"
+	"golang.org/x/term"
 	"github.com/pterm/pterm"
 	"github.com/spf13/cobra"
 )
@@ -28,9 +30,42 @@ var initCmd = &cobra.Command{
 	},
 }
 
+// OFFLOAD TO HELPER PACKAGE
 func check(e error) {
 	if e != nil {
 		panic(e)
+	}
+}
+
+// getPassword prompts the user twice for a password using pterm and ensures they match.
+// OFFLOAD TO HELPER PACKAGE
+func getPassword() string {
+	for {
+		// Prompt for first password
+		pterm.Info.Println("Enter your password:")
+		password1, err := term.ReadPassword(int(syscall.Stdin))
+		fmt.Println() // Move to a new line after input
+		if err != nil {
+			pterm.Error.Println("Error reading password:", err)
+			continue
+		}
+
+		// Prompt for confirmation
+		pterm.Info.Println("Re-enter your password:")
+		password2, err := term.ReadPassword(int(syscall.Stdin))
+		fmt.Println()
+		if err != nil {
+			pterm.Error.Println("Error reading password:", err)
+			continue
+		}
+
+		// Check if passwords match
+		if string(password1) == string(password2) {
+			pterm.Success.Println("Passwords match!")
+			return string(password1)
+		} else {
+			pterm.Warning.Println("Passwords do not match. Please try again.")
+		}
 	}
 }
 
@@ -58,22 +93,29 @@ var initLocalCmd = &cobra.Command {
 	Use: 	"local",
 	Short:	"Local management",
 	Run: func(cmd *cobra.Command, args []string) {
+// ------------------------------------------------ Staging -----------------------------------------------------
 		getDBName := pterm.DefaultInteractiveTextInput
 		getDBKey := pterm.DefaultInteractiveTextInput
+		getKeyPath := pterm.DefaultInteractiveTextInput
+		getKeyPath.DefaultText = "Enter the file path for your gpg key: "
 		getDBName.DefaultText = "Enter a local database name: " 
-		getDBKey.DefaultText = "Would you like to use an existing gpg key for encryption? (Y/N) [n]"
-		getGPGKeyPass.DefaultText = "Enter a password to use for this stores gpg key: "
-		getGPGKeyPass2.DefaultText = "Enter your password again: "
-
+		getDBKey.DefaultText = "Would you like to use an existing gpg key for encryption? (Y/N) [n] "
+// ------------------------------------------------- Logic ------------------------------------------------------	
 		Name, _ := getDBName.Show()
-		Key, _ := getDBKey.Show()
-		if Key != 
+		useExistKey, _ := getDBKey.Show() // Maybe offload this to helper function like getPass()
+		useExistNorm := strings.ToLower(string.TrimSpace(useExistKey)) // With above
+		var gpgPassword string
+		if useExistNorm == "yes" || useExistNorm == "y" {
+			existKeyPath, _ := getKeyPath.Show()
+			fmt.Println("Creating database " + Name + " with key " + existKeyPath) 
+		} else {
+			gpgPassword = getPassword()
+			fmt.Println("password" gpgPassword)
+		}
 
 		err := os.Mkdir("./internal/"+Name, 0755) // creates the directory to store the passwords.
 		check(err) // throws panic if previous command fails
 
-		// fmt.Println("Name: ", Name)
-		// fmt.Println("Key: ", Key)
 	},
 }	
 
