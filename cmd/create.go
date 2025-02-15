@@ -36,6 +36,10 @@ var createLocalCmd = &cobra.Command{
 			fmt.Println("Error writing file:", err)
 			return
 		}
+		err1 := utils.EncryptFile(PassName, "dnmeylan@gmail.com")
+		if err1 != nil {
+			fmt.Println("Error encrypting file: ", err1)
+		} else { fmt.Println("File encrypted succesfully")}
 //		return nil
 	},
 }
