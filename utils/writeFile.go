@@ -5,18 +5,29 @@ import (
 	"os"
 )
 
-func WriteFile(filename, password string) error { //expand eventually to include DB name as input
-	file, err := os.Create(filename)
+// This work but I have to find a way to get the recipient information from the exec. context
+// i.e., from the recipient associated with the database itself. 
+func CreateFile(filename, content string, recipient string) error {
+	// Write content to file
+	err := os.WriteFile(filename, []byte(content), 0600)
 	if err != nil {
-		return err
-	}
-	defer file.Close()
-
-	_, err = file.WriteString(password)
-	if err != nil {
-		return err
+		return fmt.Errorf("error writing to file: %v", err)
 	}
 
-	fmt.Println("Password written to file: ", filename)
+	// Encrypt using GPG
+	gpgFile := filename + ".gpg"
+	cmd := exec.Command("gpg", "--encrypt", "--recipient", recipient, "--output", gpgFile, filename)
+	err = cmd.Run()
+	if err != nil {
+		return fmt.Errorf("error encrypting file: %v", err)
+	}
+
+	// Delete original file
+	err = os.Remove(filename)
+	if err != nil {
+		return fmt.Errorf("error deleting original file: %v", err)
+	}
+
+	fmt.Println("File encrypted successfully:", gpgFile)
 	return nil
 }

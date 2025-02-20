@@ -97,15 +97,16 @@ var initLocalCmd = &cobra.Command {
 // ------------------------------------------------ Staging -----------------------------------------------------
 		getDBName := pterm.DefaultInteractiveTextInput
 		getDBKey := pterm.DefaultInteractiveTextInput
-		getKeyPath := pterm.DefaultInteractiveTextInput
-		getKeyPath.DefaultText = "Enter the file path for your gpg key: "
+		getRecipient := pterm.DefaultInteractiveTextInput
+		getRecipient.DefaultText = "Enter the e-mail associated with your gpg key: "
 		getDBName.DefaultText = "Enter a local database name: " 
 		getDBKey.DefaultText = "Would you like to use an existing gpg key for encryption? (Y/N) [n] "
 // ------------------------------------------------- Logic ------------------------------------------------------	
 		Name, _ := getDBName.Show()
 		useExistKey, _ := getDBKey.Show() // Maybe offload this to helper function like getPass()
 		useExistNorm := strings.ToLower(strings.TrimSpace(useExistKey)) // With above
-		var gpgPassword string
+		
+		var gpgPassword string // I'm not certain this is necessary?
 		if useExistNorm == "yes" || useExistNorm == "y" {
 			existKeyPath, _ := getKeyPath.Show()
 			fmt.Println("Creating database " + Name + " with key " + existKeyPath) 
