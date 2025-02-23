@@ -16,32 +16,30 @@ var createCmd = &cobra.Command{
 	Use:   "create",
 	Short: "A brief description of your command",
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println("create called")
+		fmt.Println("INSERT CREATION SUBCOMMAND HELP HERE")
 	},
 }
 
 var createLocalCmd = &cobra.Command{
 	Use: "local",
 	Short: "Local management",
-	Run: func(cmd *cobra.Command, args []string) {
-		getPassName := pterm.DefaultInteractiveTextInput
-		getPass := pterm.DefaultInteractiveTextInput
-		getPass.DefaultText = "Enter your password"
-		getPassName.DefaultText = "What would you like to name this local password?"
-		PassName, _ := getPassName.Show()
-		Pass, _ := getPass.Show()
-
-		err := utils.WriteFile(PassName, Pass)
+	Run: func(cmd *cobra.Command, args []string) error { // Expand to accept flags?
+//--- Staging		
+		getFileName := pterm.DefaultInteractiveTextInput
+		getRecipient := pterm.DefaultInteractiveTextInput // Try and remove eventually; use db ctx
+		getFileName.DefaultText = "Name of account: "
+		getRecipient.DefaultText = "Enter the associated with the gpg key: "
+//--- Collection
+		filename := getFileName.show()
+		recipient := getRecipient.show()
+		password := utils.GetPassword()
+//--- Logic
+		err := utils.WriteFile(filename, recipient, password) //? Need pointers here? idk
 		if err != nil {
-			fmt.Println("Error writing file:", err)
-			return
+			fmt.Println("Error encountered creating password: ", err )
+			return err
 		}
-		err1 := utils.EncryptFile(PassName, "dnmeylan@gmail.com")
-		if err1 != nil {
-			fmt.Println("Error encrypting file: ", err1)
-		} else { fmt.Println("File encrypted succesfully")}
-//		return nil
-	},
+		else return nil
 }
 
 var createClusterCmd = &cobra.Command{

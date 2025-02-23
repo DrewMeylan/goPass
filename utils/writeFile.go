@@ -7,7 +7,7 @@ import (
 
 // This work but I have to find a way to get the recipient information from the exec. context
 // i.e., from the recipient associated with the database itself. 
-func CreateFile(filename, content string, recipient string) error {
+func WriteFile(filename, content string, recipient string) error {
 	// Write content to file
 	err := os.WriteFile(filename, []byte(content), 0600)
 	if err != nil {
