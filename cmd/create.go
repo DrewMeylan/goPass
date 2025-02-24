@@ -23,7 +23,7 @@ var createCmd = &cobra.Command{
 var createLocalCmd = &cobra.Command{
 	Use: "local",
 	Short: "Local management",
-	Run: func(cmd *cobra.Command, args []string) error { // Expand to accept flags?
+	Run: func(cmd *cobra.Command, args []string) error { // 
 //--- Staging		
 		getFileName := pterm.DefaultInteractiveTextInput
 		getRecipient := pterm.DefaultInteractiveTextInput // Try and remove eventually; use db ctx

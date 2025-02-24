@@ -1,7 +1,10 @@
 02-15-25
- >> In utils, combine encryption functionality with the writeFile function. These do not need to be separate function calls.
- >> Similarly, create a ReadFunction which encompasses the decryption and re-encryption of the read password
+ >x In utils, combine encryption functionality with the writeFile function. These do not need to be separate function calls.
+ >x Similarly, create a ReadFunction which encompasses the decryption and re-encryption of the read password
  >> GPG keys / recipients should be defined on a per-store basis; add functionality at initialization to define gpg keys
- >> add flags to the create local* and create cluster calls to allow specification of which store to update
-   >> Local is supposing we decide to allow multiple distinct local stores versus one shared store with subdirs
+ >> add flags to the create cluster calls to allow specification of which store to update
  >> Add functionality to store intitalization to instantiate the local directory as a git repository
+
+02-24-25
+>> Im not sure there's a functional difference between the current use of the internals package and the utils package.
+>> For local DB, only one actual DB (one gpg key) but use multiple subdirs. Encrypt files only.
