@@ -5,7 +5,7 @@ Copyright © 2025 NAME HERE <EMAIL ADDRESS>
 package cmd
 
 import (
-	"gopass/utils"
+//	"gopass/internal/"
 	"fmt"
 	"github.com/pterm/pterm"
 	"github.com/spf13/cobra"

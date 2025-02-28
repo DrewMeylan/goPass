@@ -7,7 +7,7 @@ import (
 )
 
 // decryptAndReadFile decrypts, prints, and re-encrypts the file.
-func decryptAndReadFile(filename, recipient string) error {
+func ReadFile(filename, recipient string) error {
 	decryptedFile := filename + ".dec"
 
 	// Decrypt file
@@ -26,7 +26,7 @@ func decryptAndReadFile(filename, recipient string) error {
 	fmt.Println("Decrypted Content:\n", string(data))
 
 	// Re-encrypt the file
-	err = createAndEncryptFile(decryptedFile, string(data), recipient)
+	err = WriteFile(decryptedFile, string(data), recipient)
 	if err != nil {
 		return fmt.Errorf("error re-encrypting file: %v", err)
 	}

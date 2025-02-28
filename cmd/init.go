@@ -12,7 +12,8 @@ import (
 //	"io/fs"
 //	"path/filepath"
 	"syscall"
-	"gopass/utils"
+	"gopass/internal/password"
+  "gopass/internal/files"
   "golang.org/x/term"
 	"github.com/pterm/pterm"
 	"github.com/spf13/cobra"
@@ -30,45 +31,6 @@ var initCmd = &cobra.Command{
 		fmt.Println("init called")
 	}
 	},
-}
-
-// OFFLOAD TO HELPER PACKAGE
-func check(e error) {
-	if e != nil {
-		panic(e)
-	}
-}
-
-// getPassword prompts the user twice for a password using pterm and ensures they match.
-// OFFLOAD TO HELPER PACKAGE
-func getPassword() string {
-	for {
-		// Prompt for first password
-		pterm.Info.Println("Enter your password:")
-		password1, err := term.ReadPassword(int(syscall.Stdin))
-		fmt.Println() // Move to a new line after input
-		if err != nil {
-			pterm.Error.Println("Error reading password:", err)
-			continue
-		}
-
-		// Prompt for confirmation
-		pterm.Info.Println("Re-enter your password:")
-		password2, err := term.ReadPassword(int(syscall.Stdin))
-		fmt.Println()
-		if err != nil {
-			pterm.Error.Println("Error reading password:", err)
-			continue
-		}
-
-		// Check if passwords match
-		if string(password1) == string(password2) {
-			pterm.Success.Println("Passwords match!")
-			return string(password1)
-		} else {
-			pterm.Warning.Println("Passwords do not match. Please try again.")
-		}
-	}
 }
 
 var initClusterCmd = &cobra.Command{
@@ -112,11 +74,11 @@ var initLocalCmd = &cobra.Command {
 			existKeyPath, _ := getKeyPath.Show()
 			fmt.Println("Creating database " + Name + " with key " + existKeyPath) 
 		} else {
-			gpgPassword = getPassword()
+			gpgPassword = GetPassword()
 			fmt.Println("password: " + gpgPassword)
 		}
 
-		err := os.Mkdir("./internal/"+Name, 0755) // creates the directory to store the passwords.
+		err := os.Mkdir("./internal/"+Name, 0755) // creates the directory to store the passwords. // THIS SHOULD BE OFF-LOADED INTO THE FILES PKG
 		check(err) // throws panic if previous command fails
 
 	},
