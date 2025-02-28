@@ -12,7 +12,8 @@ import (
 //	"io/fs"
 //	"path/filepath"
 	"syscall"
-	"golang.org/x/term"
+	"gopass/utils"
+  "golang.org/x/term"
 	"github.com/pterm/pterm"
 	"github.com/spf13/cobra"
 )

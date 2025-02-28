@@ -1,10 +1,10 @@
-package utils
+package files
 
-import {
+import (
 	"fmt"
 	"os"
 	"os/exec"
-}
+)
 
 // decryptAndReadFile decrypts, prints, and re-encrypts the file.
 func decryptAndReadFile(filename, recipient string) error {

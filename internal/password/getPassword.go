@@ -1,10 +1,11 @@
-package utils
+package password
 
-import {
+import (
 	"fmt"
 	"golang.org/x/term"
 	"github.com/pterm/pterm"
-}
+  "syscall"
+)
 
 func GetPassword() string {
 	for {
