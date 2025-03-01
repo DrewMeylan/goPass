@@ -12,7 +12,8 @@ import (
 //	"io/fs"
 //	"path/filepath"
 	"syscall"
-	"gopass/internal/password"
+	"gopass/intenral/crypto"
+  "gopass/internal/password"
   "gopass/internal/files"
   "golang.org/x/term"
 	"github.com/pterm/pterm"
@@ -61,21 +62,37 @@ var initLocalCmd = &cobra.Command {
 		getDBName := pterm.DefaultInteractiveTextInput
 		getDBKey := pterm.DefaultInteractiveTextInput
 		getRecipient := pterm.DefaultInteractiveTextInput
-		getRecipient.DefaultText = "Enter the e-mail associated with your gpg key: "
-		getDBName.DefaultText = "Enter a local database name: " 
-		getDBKey.DefaultText = "Would you like to use an existing gpg key for encryption? (Y/N) [n] "
+    getUserName := pterm.DefaultInteractiveTextInput
+    getDBName.DefaultText = "Enter a local database name: "
+    getDBKey.DefaultText = "Would you like to use an existing gpg key for encryption? (Y/N) [n] "
+    // If no
+    getUserName.DefaultText = "Enter your name: "
+    getRecipient.DefaultText = "Enter your e-mail: "
 // ------------------------------------------------- Logic ------------------------------------------------------	
-		Name, _ := getDBName.Show()
+		var gpgPassword string // I'm not certain this is necessary?
+
+    Name, _ := getDBName.Show()
 		useExistKey, _ := getDBKey.Show() // Maybe offload this to helper function like getPass()
 		useExistNorm := strings.ToLower(strings.TrimSpace(useExistKey)) // With above
-		
-		var gpgPassword string // I'm not certain this is necessary?
 		if useExistNorm == "yes" || useExistNorm == "y" {
-			existKeyPath, _ := getKeyPath.Show()
-			fmt.Println("Creating database " + Name + " with key " + existKeyPath) 
+			existKey, _ := getRecipient.Show()
+			fmt.Println("Creating database " + Name + " with key for " + existKey) 
+      // Modify config file --> WriteFile() function in internal/files
+      // create directory --> CreateFolder() function in internal/files?
 		} else {
-			gpgPassword = GetPassword()
-			fmt.Println("password: " + gpgPassword)
+      name, _ = getUserName.show()
+      email, _ = getRecipient.show()
+			gpgPassword, err = GetPassword()
+			fmt.Println("Attempted to generate GPG key... ")
+      _, err := GenerateGPGKey(name, email, gpgPassword)
+      if err != nil {
+        fmt.Println("Error encountered: " + err)
+      }
+      else {
+        fmt.Println("GPG key created successfully")
+      }
+      // Modify config file
+      // create directory
 		}
 
 		err := os.Mkdir("./internal/"+Name, 0755) // creates the directory to store the passwords. // THIS SHOULD BE OFF-LOADED INTO THE FILES PKG

@@ -7,7 +7,7 @@ import (
   "syscall"
 )
 
-func GetPassword() string {
+func GetPassword() (string, error){
 	for {
 		// Prompt for first password
 		pterm.Info.Println("Enter your password:")
