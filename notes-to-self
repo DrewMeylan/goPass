@@ -5,7 +5,9 @@ To-Do
 >> Filepath will be a required argument for CRUD operations
 >> Init commands will retain local and cluster subcommands and will be used for initialization of new stores only.
    >> Initialization must include authentication processes for joining a cluster.
->> Refactor code for reading a writing files
+>> Refactor code for reading and writing files
    >> Separate encryption/decryption functions to crypto pkg
    >> Should handle all logic surrounding creating directories, files, folders, etc (currently some of this logic is handled by the cobra commands)
 
+Added RemoveSection and AddSection commands to file package; will be used for modifications to config file
+and pruning DBs from filesystem
