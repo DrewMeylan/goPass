@@ -1,4 +1,3 @@
-To-Do
 >> GPG keys / recipients should be defined on a per-store basis; add functionality at initialization to define gpg keys
 >> Add functionality to store intitalization to instantiate the local directory as a git repository
 >> Removing local and cluster subcommands of CRUD operations. DBs are sufficiently namepsaced by virtue of their filepath.
@@ -11,3 +10,5 @@ To-Do
 
 Added RemoveSection and AddSection commands to file package; will be used for modifications to config file
 and pruning DBs from filesystem
+
+>> Need to work on updateConfig.go to get the deletion part done for removing local databases

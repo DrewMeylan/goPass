@@ -6,8 +6,8 @@ import (
   "runtime"
 )
 
-func removeSection(filename, dbName string) error {
-	// Modify config file
+func RemoveSection(filename, dbName string) error {
+	// Modify config file -- Confirmed working
   inputFile, err := os.Open(filename)
 	if err != nil {
 		return err
@@ -55,7 +55,7 @@ func removeSection(filename, dbName string) error {
   
   // Detect OS?
   opSys = runtime.GOOS
-  // Delete folder for DB depending on OS used
+  // Delete folder for DB depending on OS used -- Not working yet
   if opSys == "windows" {
     err := os.RemoveAll("C:\\Users\\$USER\\AppData\\goPass\\stores\\local\\" + dbname)
     if err != nil {
@@ -75,11 +75,11 @@ func removeSection(filename, dbName string) error {
 }
 
 
-func AddSection(dbName, recipient) error {
+//func AddSection(dbName, recipient) error {
 
-}
+//}
 
-func UpdateConfig(dbName, recipient, operation) error {
+//func UpdateConfig(dbName, recipient, operation) error {
   // if operation is "Create"
     // err := createDB(dbname, recipient)
     // if err != nil {
