@@ -34,7 +34,7 @@ var createLocalCmd = &cobra.Command{
 		recipient := getRecipient.show()
 		password := utils.GetPassword()
 //--- Logic
-		err := utils.WriteFile(filename, recipient, password) //? Need pointers here? idk
+		err := utils.WriteFile(filename, recipient, password) // UPDATE TO REFLECT NEW FILE STRUCTURE
 		if err != nil {
 			fmt.Println("Error encountered creating password: ", err )
 			return err
